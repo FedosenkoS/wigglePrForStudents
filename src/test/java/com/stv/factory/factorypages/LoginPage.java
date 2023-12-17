@@ -4,7 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 
 public class LoginPage extends FactoryPage {
-    @FindBy(xpath = "//*[contains(text(),'Please log in')]")
+    @FindBy(xpath = "//p[@class='cdf38eeeb cbd26c9fb']")
     private WebElement loginContainer;
     @FindBy(xpath = "//span[@class='MyAccountToggle_linkText__izUQJ MyAccountToggle_linkTextDesktopOnly__spsqM']")
     private WebElement accountContainer;

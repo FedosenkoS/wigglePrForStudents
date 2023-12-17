@@ -5,11 +5,14 @@ import com.stv.factory.factorypages.MainFactoryPage;
 import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 import java.util.concurrent.TimeUnit;
 
 import static com.stv.framework.core.lib.WigglePageURLs.START_LOGIN_URL1;
+import static com.stv.framework.core.lib.WigglePageURLs.EMAIL_SIND_IN;
+import static com.stv.framework.core.lib.WigglePageURLs.PASSWORD_SIND_IN;
 
 public class MainFactoryTest extends BasicFactoryTest {
 
@@ -39,10 +42,10 @@ public class MainFactoryTest extends BasicFactoryTest {
     @Test(description = "validation of the\"Sing in\" form validation when entering password and email", dependsOnMethods = "validationRegisterPageNewCustomer")
     public void validationSinginPasswordEmail() throws InterruptedException {
 
-        String PASSWORD_SIND_IN = "Ibm2021";
-        String Email_SIND_IN = "svetunchuk2008@mail.ru";
+//        String PASSWORD_SIND_IN = "Ibm2021";
+//        String EMAIL_SIND_IN = "svetunchuk2008@mail.ru";
 
-        mainFactoryPage.sendKeysOnSinginEmailAdress(Email_SIND_IN);
+        mainFactoryPage.sendKeysOnSinginEmailAdress(EMAIL_SIND_IN);
         mainFactoryPage.sendKeysOnSinginPassword(PASSWORD_SIND_IN);
         mainFactoryPage.clickOnSinginSecurely();
 
@@ -51,11 +54,11 @@ public class MainFactoryTest extends BasicFactoryTest {
 
     }
 
-    @Test(description = "validation of the\"Sing in\" form validation when only password is entered")
-    public void validationSinginPassword() {
-        String PASSWORD_SIND_IN = "Ibm2022";
+    @Test(description = "validation of the\"Sing in\" form validation when only password is entered", dataProvider = "testData")
+    public void validationSinginPassword(String noValpassword) {
+        //String PASSWORD_SIND_IN = "Ibm2022";
 
-        mainFactoryPage.sendKeysOnSinginPassword(PASSWORD_SIND_IN);
+        mainFactoryPage.sendKeysOnSinginPassword(noValpassword);
         mainFactoryPage.clickOnSinginSecurely();
 
         Assert.assertEquals(new LoginPage().isLoginContainerDisplayed(), true, "Account logged in");
@@ -63,14 +66,15 @@ public class MainFactoryTest extends BasicFactoryTest {
     }
 
 
-    @Test(description = "validation of the \"New customer\" form by a previously unregistered user", dependsOnMethods = "validationSinginPassword")
-    public void validationRegisterPageNewCustomer() {
 
-        String Email_New_Customer = "fedosenkos1.22@gmail.com";
-        String PASSWORD_SIND_IN = "Ibm2021";
+    @Test(description = "validation of the \"New customer\" form by a previously unregistered user", dependsOnMethods = "validationSinginPassword", dataProvider = "testData2")
+    public void validationRegisterPageNewCustomer(String email, String password) {
 
-        mainFactoryPage.sendKeysOnSinginEmailAdress(Email_New_Customer);
-        mainFactoryPage.sendKeysOnSinginPassword(PASSWORD_SIND_IN);
+//        String Email_New_Customer = "fedosenkos1.22@gmail.com";
+//        String PASSWORD_SIND_IN = "Ibm2021";
+
+        mainFactoryPage.sendKeysOnSinginEmailAdress(email);
+        mainFactoryPage.sendKeysOnSinginPassword(password);
         mainFactoryPage.clickOnSinginSecurely();
 
         Assert.assertEquals(new LoginPage().isNewCustomerontainerDisplayed(), true, "Account logged in");
@@ -78,5 +82,18 @@ public class MainFactoryTest extends BasicFactoryTest {
 
 
     }
+    @DataProvider()
+    public Object[][] testData() {
+        return new Object[][] {
+                new Object[] {"Ibm2022"},
 
+        };
+    }
+    @DataProvider()
+    public Object[][] testData2() {
+        return new Object[][] {
+                new Object[] {"fedosenkos1.22@gmail.com", "Ibm2021"},
+
+        };
+    }
 }
